@@ -1,7 +1,7 @@
+package model;
+
 /**
- * Word class, contains a word and its definition.
- *
- * @author Ngo Quy Dat
+ * model.Word class, contains a word and its definition.
  */
 public class Word {
     private String word_target;

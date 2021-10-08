@@ -1,11 +1,17 @@
+package model;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Dictionary class, stores all words.
+ * model.Dictionary class, stores all words.
  */
 public class Dictionary {
-    ArrayList<Word> word_list = new ArrayList<>();
+    private ArrayList<Word> word_list = new ArrayList<>();
+
+    public ArrayList<Word> getWord_list() {
+        return word_list;
+    }
 
     /**
      * Find the definition of a word in the list.
@@ -18,7 +24,6 @@ public class Dictionary {
                 return i.getWord_explain();
             }
         }
-        System.out.println("Word not found.");
         return "";
     }
 

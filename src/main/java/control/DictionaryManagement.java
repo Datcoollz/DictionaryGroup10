@@ -1,13 +1,17 @@
+package control;
+
+import model.Dictionary;
+
 import java.io.File;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 
-public class DictionaryManagement extends Dictionary {
+public class DictionaryManagement {
 
     /**
      * Insert word from commandline
      */
-    public void setInsertFromCommandline() {
+    public static void setInsertFromCommandline(Dictionary dictionary) {
         Scanner input = new Scanner(System.in);
         int word_num = input.nextInt();
         String input_word;
@@ -15,7 +19,7 @@ public class DictionaryManagement extends Dictionary {
         for (int i = 0; i < word_num; i++) {
             input_word = input.next();
             input_definition = input.nextLine();
-            this.addWord(input_word, input_definition);
+            dictionary.addWord(input_word, input_definition);
         }
         input.close();
     }
