@@ -9,8 +9,6 @@ public class run {
     private static final String file_name = "dictionaries.txt";
     public static void main(String[] args) {
         Dictionary dictionary = new Dictionary();
-        DictionaryManagement management = new DictionaryManagement();
-        DictionaryCommandLine commandLine = new DictionaryCommandLine();
-
+        DictionaryCommandLine.dictionaryBasic(DictionaryCommandLine.SHOW_ALL_WORD, dictionary);
     }
 }

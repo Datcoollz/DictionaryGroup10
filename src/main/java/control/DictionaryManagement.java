@@ -11,7 +11,7 @@ public class DictionaryManagement {
     /**
      * Insert word from commandline
      */
-    public static void setInsertFromCommandline(Dictionary dictionary) {
+    public static void insertFromCommandline(Dictionary dictionary) {
         Scanner input = new Scanner(System.in);
         int word_num = input.nextInt();
         String input_word;
