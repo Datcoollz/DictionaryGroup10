@@ -3,28 +3,15 @@ package model;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import model.Word;
 /**
- * model.Dictionary class, stores all words.
+ * Dictionary class, stores all words.
  */
 public class Dictionary {
     private ArrayList<Word> word_list = new ArrayList<>();
 
     public ArrayList<Word> getWord_list() {
         return word_list;
-    }
-
-    /**
-     * Find the definition of a word in the list.
-     *
-     * @return the definition of the word
-     */
-    public String getDefinitionFromWord(String word_target) {
-        for (Word i : word_list) {
-            if(Objects.equals(i.getWord_target(), word_target)) {
-                return i.getWord_explain();
-            }
-        }
-        return "";
     }
 
     /**
