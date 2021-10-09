@@ -14,6 +14,10 @@ public class DictionaryCommandLine {
     private static final String INSERT_FROM_COMMANDLINE = "insert from commandline";
     private static final String INSERT_FROM_FILE = "insert from file";
     private static final String LOOK_UP = "look up";
+    private static final String REMOVE_WORD = "remove word";
+    private static final String EXPORT_TO_FILE = "export to file";
+    private static final String FIX_WORD = "fix word";
+    private static final String ADD_WORD = "add word";
 
     /**
      * Show all words in the dictionary
@@ -40,9 +44,18 @@ public class DictionaryCommandLine {
      */
     public void dictionaryBasic(String COMMAND, Dictionary dictionary) {
         switch (COMMAND) {
-            case SHOW_ALL_WORD -> this.showAllWords(dictionary);
-            case INSERT_FROM_COMMANDLINE -> DictionaryManagement.insertFromCommandline(dictionary);
-            default -> System.out.println("Lenh khong hop le");
+            case SHOW_ALL_WORD: {
+                this.showAllWords(dictionary);
+                break;
+            }
+            case INSERT_FROM_COMMANDLINE: {
+                DictionaryManagement.insertFromCommandline(dictionary);
+                break;
+            }
+            default: {
+                System.out.println("Lenh khong hop le");
+                break;
+            }
         }
     }
 
@@ -53,21 +66,38 @@ public class DictionaryCommandLine {
      */
     public void dictionaryAdvanced(String COMMAND, Dictionary dictionary) {
         switch (COMMAND) {
-            case SHOW_ALL_WORD -> this.showAllWords(dictionary);
-            case INSERT_FROM_FILE -> DictionaryManagement.insertFromFile(dictionary);
-            case INSERT_FROM_COMMANDLINE -> DictionaryManagement.insertFromCommandline(dictionary);
-            case LOOK_UP -> {
-                System.out.println("tim tu khoa:");
-                Scanner scanner = new Scanner(System.in);
-                String word_target = scanner.nextLine();
-                String word_definition = DictionaryManagement.dictionaryLookup(dictionary, word_target);
-                if (!word_definition.equals("")) {
-                    System.out.println("nghia cua "
-                            + word_target + " la: "
-                            + word_definition);
-                }
+            case SHOW_ALL_WORD: {
+                this.showAllWords(dictionary);
+                break;
             }
-            default -> System.out.println("Lenh khong hop le");
+            case INSERT_FROM_FILE: {
+                DictionaryManagement.insertFromFile(dictionary);
+                break;
+            }
+            case LOOK_UP: {
+                DictionaryManagement.dictionaryLookup(dictionary);
+                break;
+            }
+            case ADD_WORD: {
+                DictionaryManagement.addWord(dictionary);
+                break;
+            }
+            case REMOVE_WORD: {
+                DictionaryManagement.removeWord(dictionary);
+                break;
+            }
+            case FIX_WORD: {
+                DictionaryManagement.fixWord(dictionary);
+                break;
+            }
+            case EXPORT_TO_FILE: {
+                DictionaryManagement.dictionaryExportTofile(dictionary);
+                break;
+            }
+            default: {
+                System.out.println("Lenh khong hop le");
+                break;
+            }
         }
     }
 }
