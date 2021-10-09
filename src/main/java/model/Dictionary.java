@@ -13,13 +13,4 @@ public class Dictionary {
     public ArrayList<Word> getWord_list() {
         return word_list;
     }
-
-    /**
-     * Add a new word to the list
-     * @param word_target added word
-     * @param word_explain word's definition
-     */
-    public void addWord(String word_target, String word_explain) {
-        this.word_list.add(new Word(word_target, word_explain));
-    }
 }
