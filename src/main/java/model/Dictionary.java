@@ -22,4 +22,8 @@ public class Dictionary {
     public void addWord(String word_target, String word_explain) {
         this.word_list.add(new Word(word_target, word_explain));
     }
+
+    public void addWord(Word word) {
+        this.word_list.add(word);
+    }
 }

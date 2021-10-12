@@ -30,4 +30,9 @@ public class Word {
         this.word_target = word_target;
         this.word_explain = word_explain;
     }
+
+    @Override
+    public String toString() {
+        return this.word_target;
+    }
 }

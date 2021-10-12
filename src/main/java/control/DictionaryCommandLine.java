@@ -10,24 +10,24 @@ import java.util.Scanner;
  * Command line class, performs command line functions.
  */
 public class DictionaryCommandLine {
-    private static final String SHOW_ALL_WORD = "show all word";
-    private static final String INSERT_FROM_COMMANDLINE = "insert from commandline";
-    private static final String INSERT_FROM_FILE = "insert from file";
-    private static final String LOOK_UP = "look up";
+    public static final String SHOW_ALL_WORD = "show all word";
+    public static final String INSERT_FROM_COMMANDLINE = "insert from commandline";
+    public static final String INSERT_FROM_FILE = "insert from file";
+    public static final String LOOK_UP = "look up";
 
     /**
      * Show all words in the dictionary
      */
-    private void showAllWords(Dictionary dictionary) {
+    private static void showAllWords(Dictionary dictionary) {
         ArrayList<Word> word_list = dictionary.getWord_list();
-        if(word_list.isEmpty()) {
-            System.out.println("Khong co tu trong tu dien.");
+        if (word_list.isEmpty()) {
+            System.out.println("Khong co tu nao thoa man.");
             return;
         }
 
         int count = 1;
         System.out.println("No\t|English\t|Vietnamese");
-        for(Word i : word_list) {
+        for (Word i : word_list) {
             System.out.printf("%d\t|%s\t|%s\n", count, i.getWord_target(), i.getWord_explain());
             ++count;
         }
@@ -36,24 +36,26 @@ public class DictionaryCommandLine {
     /**
      * Run basic commands.
      * Includes showAllWords() and InsertFromCommandLine();
+     *
      * @param COMMAND the command code
      */
-    public void dictionaryBasic(String COMMAND, Dictionary dictionary) {
+    public static void dictionaryBasic(String COMMAND, Dictionary dictionary) {
         switch (COMMAND) {
-            case SHOW_ALL_WORD -> this.showAllWords(dictionary);
+            case SHOW_ALL_WORD -> showAllWords(dictionary);
             case INSERT_FROM_COMMANDLINE -> DictionaryManagement.insertFromCommandline(dictionary);
             default -> System.out.println("Lenh khong hop le");
         }
     }
 
     /**
-     *  additional command
-     * @param COMMAND the command code
+     * Additional command.
+     *
+     * @param COMMAND    the command code
      * @param dictionary targeted dictinary
      */
-    public void dictionaryAdvanced(String COMMAND, Dictionary dictionary) {
+    public static void dictionaryAdvanced(String COMMAND, Dictionary dictionary) {
         switch (COMMAND) {
-            case SHOW_ALL_WORD -> this.showAllWords(dictionary);
+            case SHOW_ALL_WORD -> showAllWords(dictionary);
             case INSERT_FROM_FILE -> DictionaryManagement.insertFromFile(dictionary);
             case INSERT_FROM_COMMANDLINE -> DictionaryManagement.insertFromCommandline(dictionary);
             case LOOK_UP -> {
@@ -69,5 +71,33 @@ public class DictionaryCommandLine {
             }
             default -> System.out.println("Lenh khong hop le");
         }
+    }
+
+    /**
+     * Search for words that contain a string.
+     *
+     * @param dictionary the dictionary for searching
+     * @param word_key   the input string for searching
+     * @return a dictionary containing the words
+     */
+    public static Dictionary dictionarySearcher(Dictionary dictionary, String word_key) {
+        Dictionary return_word_list = new Dictionary();
+        if (!word_key.isEmpty()) {
+            System.out.println("Searching for words that start with " + word_key);
+            ArrayList<Word> word_list = dictionary.getWord_list();
+            for (Word word : word_list) {
+                String word_target = word.getWord_target();
+                for (int i = 0; i < word_target.length(); i++) {
+                    if (word_key.length() == i) {
+                        return_word_list.addWord(word);
+                        break;
+                    }
+                    if(word_target.charAt(i) != word_key.charAt(i)) {
+                        break;
+                    }
+                }
+            }
+        }
+        return return_word_list;
     }
 }

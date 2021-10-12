@@ -15,12 +15,26 @@ public class DictionaryManagement {
      */
     public static void insertFromCommandline(Dictionary dictionary) {
         Scanner input = new Scanner(System.in);
-        int word_num = input.nextInt();
-        input.nextLine();
+        //Input number of words
+        boolean number_get = false;
+        int word_num = 0;
+        String input_num;
+        while (!number_get) {
+            System.out.print("Number of words to add: ");
+            try {
+                input_num = input.nextLine();
+                word_num = Integer.parseInt(input_num);
+                number_get = true;
+            }
+            catch (NumberFormatException exception) {
+                System.out.println("Invalid number.");
+            }
+        }
+        //Input each words
         String input_word;
         String input_definition;
         for (int i = 0; i < word_num; i++) {
-            input_word = input.next();
+            input_word = input.nextLine();
             input_definition = input.nextLine();
             dictionary.addWord(input_word, input_definition);
         }
@@ -29,7 +43,7 @@ public class DictionaryManagement {
 
     public static void insertFromFile(Dictionary dictionary) {
         try {
-            File file = new File("document.txt");
+            File file = new File("dictionaries.txt");
             Scanner input = new Scanner(file);
             while (input.hasNextLine()) {
                 String data = input.nextLine();
