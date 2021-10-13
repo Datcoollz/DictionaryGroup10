@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Comparator;
+
 /**
  * model.Word class, contains a word and its definition.
  */
@@ -30,4 +32,10 @@ public class Word {
         this.word_target = word_target;
         this.word_explain = word_explain;
     }
+
+    @Override
+    public String toString() {
+        return this.word_target;
+    }
+
 }
