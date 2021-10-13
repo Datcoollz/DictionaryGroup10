@@ -16,6 +16,7 @@ public class DictionaryApplication {
     JButton search_button = new JButton("Search");
 
     JList<Word> word_list = new JList<>();
+    JScrollPane scroll_pane = new JScrollPane();
     DefaultListModel<Word> word_list_model = new DefaultListModel<>();
     ListSelectionModel selectionModel;
 
@@ -33,7 +34,7 @@ public class DictionaryApplication {
     }
 
     /**
-     *
+     * Update current word explain.
      */
     private void updateWordExplain() {
         int index = this.word_list.getSelectedIndex();
@@ -66,11 +67,12 @@ public class DictionaryApplication {
                 }
             }
         });
-        this.frame.add(this.word_list);
+        this.scroll_pane.setViewportView(word_list);
+        this.frame.add(this.scroll_pane);
 
         //Word explain area
         this.word_explain.setBounds(100, 100, 100, 40);
-        this.frame.add(this.word_explain);
+        //this.frame.add(this.word_explain);
         
 
         //Final constructor
