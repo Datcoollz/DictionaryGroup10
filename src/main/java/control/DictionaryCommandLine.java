@@ -4,8 +4,6 @@ import model.Dictionary;
 import model.Word;
 
 import java.util.ArrayList;
-import java.util.Scanner;
-import javax.swing.*;
 
 /**
  * Command line class, performs command line functions.
@@ -15,14 +13,13 @@ public class DictionaryCommandLine {
     public static final String SHOW_ALL_WORD = "show all word";
     public static final String INSERT_FROM_COMMANDLINE = "insert from commandline";
     public static final String INSERT_FROM_FILE = "insert from file";
-    public static final String LOOK_UP = "look up";
     public static final String REMOVE_WORD = "remove word";
     public static final String EXPORT_TO_FILE = "export to file";
     public static final String FIX_WORD = "fix word";
     public static final String ADD_WORD = "add word";
 
     /**
-     * Show all words in the dictionary
+     * Show all words in the dictionary to commandline
      */
     private static void showAllWords(Dictionary dictionary) {
         ArrayList<Word> word_list = dictionary.getWordList();
@@ -57,16 +54,17 @@ public class DictionaryCommandLine {
                 }
             }
         }
+        else {
+            return_word_list = dictionary;
+        }
         return return_word_list;
     }
 
     /**
-     * Run basic commands.
-     * Includes showAllWords() and InsertFromCommandLine();
-     *
-     * @param COMMAND the command code
+     * Additional command, general commands that doesn't require a word.
+     * Includes showAllWord(), insertFromFile() and exportToFile().
      */
-    public static void dictionaryBasic(String COMMAND, Dictionary dictionary) {
+    public static void dictionaryAdvanced(String COMMAND, Dictionary dictionary) {
         switch (COMMAND) {
             case SHOW_ALL_WORD: {
                 showAllWords(dictionary);
@@ -74,43 +72,11 @@ public class DictionaryCommandLine {
             }
             case INSERT_FROM_COMMANDLINE: {
                 DictionaryManagement.insertFromCommandline(dictionary);
-                break;
-            }
-            default: {
-                System.out.println("Lenh khong hop le");
-                break;
-            }
-        }
-    }
-
-    /**
-     * Additional command, general commands that doesn't require a word.
-     *
-     * @param COMMAND    the command code
-     * @param dictionary targeted dictinary
-     */
-    public static void dictionaryAdvanced(String COMMAND, Dictionary dictionary) {
-        String word_target;
-        String word_explain;
-        switch (COMMAND) {
-            case SHOW_ALL_WORD: {
-                showAllWords(dictionary);
-                break;
             }
             case INSERT_FROM_FILE: {
                 DictionaryManagement.insertFromFile(dictionary);
                 break;
             }
-            case LOOK_UP:
-                System.out.println("tim tu khoa:");
-                Scanner scanner = new Scanner(System.in);
-                word_target = scanner.nextLine();
-                word_explain = DictionaryManagement.dictionaryLookup(dictionary, word_target);
-                if (!word_explain.equals("")) {
-                    System.out.println("nghia cua "
-                            + word_target + " la: "
-                            + word_explain);
-                }
             case EXPORT_TO_FILE: {
                 DictionaryManagement.dictionaryExportToFile(dictionary);
                 break;
@@ -124,6 +90,7 @@ public class DictionaryCommandLine {
 
     /**
      * Additional commands, these are commands that require a word.
+     * Includes addWord(), removeWord(), fixWord(), dictionarySearcher and dictionaryLookup()
      */
     public static Dictionary dictionaryAdvanced(String COMMAND, Dictionary dictionary, Word word) {
         switch (COMMAND) {
