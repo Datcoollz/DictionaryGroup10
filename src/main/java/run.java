@@ -2,8 +2,6 @@ import control.DictionaryCommandLine;
 import model.Dictionary;
 import view.DictionaryView;
 
-import java.util.Scanner;
-
 public class run {
     public static void main(String[] args) {
         Dictionary dictionary = new Dictionary();
