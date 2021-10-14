@@ -51,7 +51,7 @@ public class DictionaryManagement {
     /**
      * Look for a word's definition.
      *
-     * @param dictionary input dictionary
+     * @param dictionary  input dictionary
      * @param word_target word_target to search for definition
      * @return word_explain of the word_target
      */
@@ -109,7 +109,8 @@ public class DictionaryManagement {
         if (dictionary.getWordList().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Word list is empty");
         } else {
-            if (!word.getWordTarget().equals(dictionary.getWordList().get(index).getWordTarget())) {
+            if (dictionary.getWordList().size() <= index
+                    || !word.getWordTarget().equals(dictionary.getWordList().get(index).getWordTarget())) {
                 JOptionPane.showMessageDialog(null, "Word does not exist");
             } else {
                 dictionary.getWordList().get(index).setWordExplain(word.getWordExplain());
@@ -133,5 +134,4 @@ public class DictionaryManagement {
             System.out.println("No file found");
         }
     }
-
 }
