@@ -4,30 +4,28 @@ package model;
  * model.Word class, contains a word and its definition.
  */
 public class Word {
-    private String word_target;
-    private String word_explain;
+    private final String wordTarget;
+    private String wordExplain;
 
-    public String getWord_target() {
-        return word_target;
+    public String getWordTarget() {
+        return wordTarget;
     }
 
-    public void setWord_target(String word_target) {
-        this.word_target = word_target;
+    public String getWordExplain() {
+        return wordExplain;
     }
 
-    public String getWord_explain() {
-        return word_explain;
+    public void setWordExplain(String wordExplain) {
+        this.wordExplain = wordExplain;
     }
 
-    public void setWord_explain(String word_explain) {
-        this.word_explain = word_explain;
+    public Word(String wordTarget, String wordExplain) {
+        this.wordTarget = wordTarget;
+        this.wordExplain = wordExplain;
     }
 
-    public Word() {
-    }
-
-    public Word(String word_target, String word_explain) {
-        this.word_target = word_target;
-        this.word_explain = word_explain;
+    @Override
+    public String toString() {
+        return this.wordTarget;
     }
 }
