@@ -44,11 +44,11 @@ public class DictionaryCommandLine {
             for (Word word : word_list) {
                 String word_target = word.getWordTarget();
                 for (int i = 0; i < word_target.length(); i++) {
-                    if (word_key.length() == i) {
-                        return_word_list.getWordList().add(word);
+                    if (Character.toLowerCase(word_target.charAt(i)) != Character.toLowerCase(word_key.charAt(i))) {
                         break;
                     }
-                    if (word_target.charAt(i) != word_key.charAt(i)) {
+                    if (word_key.length() == i + 1) {
+                        return_word_list.getWordList().add(word);
                         break;
                     }
                 }
