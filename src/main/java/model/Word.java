@@ -1,10 +1,13 @@
 package model;
 
 /**
- * model.Word class, contains a word and its definition.
+ * Word class, contain the details of the word
  */
 public class Word {
-    private final String wordTarget;
+
+
+    //Old code
+    private String wordTarget;
     private String wordExplain;
 
     public String getWordTarget() {
@@ -17,6 +20,9 @@ public class Word {
 
     public void setWordExplain(String wordExplain) {
         this.wordExplain = wordExplain;
+    }
+
+    public Word() {
     }
 
     public Word(String wordTarget, String wordExplain) {
