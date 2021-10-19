@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public class Dictionary {
         char ch;
         boolean isWordEnding = false;
         HashMap<Character, Node> children = new HashMap<>();
-        Word wordData;
+        Word wordData = null;
 
         //Constructor
         public Node(char ch) {
@@ -29,9 +30,11 @@ public class Dictionary {
             children.put(c, node);
         }
     }
+    //Inserting method
 
     /**
      * Insert a new word into the list
+     *
      * @param word the word to add
      * @return true if the word is added,
      * false if the word is empty or already in the list
@@ -65,22 +68,31 @@ public class Dictionary {
         }
         return true;
     }
+    //Searching methods
+
+    /**
+     * Search method but with word input
+     */
+    public Word search(Word word) {
+        return search(word.getWordTarget());
+    }
 
     /**
      * Search for a specific word
+     *
      * @param key input word
      * @return the Word value of the word
      */
     public Word search(String key) {
         if (key == null) {
-            return new Word();
+            return null;
         }
         Node node = root;
         key = key.toLowerCase();
         for (char ch : key.toCharArray()) {
             Node nextNode = node.children.get(ch);
             if (nextNode == null) {
-                return new Word();
+                return null;
             }
             node = nextNode;
         }
@@ -91,11 +103,12 @@ public class Dictionary {
             }
         }
         //Else return empty word
-        return new Word();
+        return null;
     }
 
     /**
-     * Get all the child of a node and the node word itself
+     * Get all the Word of all children node and the node itself
+     *
      * @param node input node
      * @return ArrayList of Word
      */
@@ -111,9 +124,28 @@ public class Dictionary {
     }
 
     /**
+     * Get all strings in the dictionary
+     * Basically search for strings with an empty prefix
+     */
+    public ArrayList<Word> searchAll() {
+        return searchPrefix("");
+    }
+
+    /**
+     * Search prefix but with word as input.
+     *
+     * @param word input word
+     * @return ArrayList of Word
+     */
+    public ArrayList<Word> searchPrefix(Word word) {
+        return searchPrefix(word.getWordTarget());
+    }
+
+    /**
      * Get all string with input prefix
+     *
      * @param key input prefix
-     * @return ArrayList of strings
+     * @return ArrayList of Word
      */
     public ArrayList<Word> searchPrefix(String key) {
         Node node = root;
@@ -129,12 +161,86 @@ public class Dictionary {
         }
         return getAllChild(node);
     }
+    //Deleting methods
 
     /**
-     * Get all strings in the dictionary
-     * Basically search for strings with an empty prefix
+     * Delete a word from the trie.
+     *
+     * @param key word to delete
      */
-    public ArrayList<Word> searchAll() {
-        return searchPrefix("");
+    public void delete(String key) {
+        delete(root, key.toLowerCase(), 0);
     }
+
+    /**
+     * Delete method but with word input.
+     */
+    public void delete(Word word) {
+        delete(word.getWordTarget());
+    }
+
+    /**
+     * Recurring method for deleting nodes.
+     *
+     * @param currentNode current node
+     * @param key         the word to delete
+     * @param index       current index
+     * @return true if the current node can be deleted,
+     * false if not
+     */
+    private boolean delete(Node currentNode, String key, int index) {
+        if (index == key.length()) {
+            if (!currentNode.isWordEnding) {
+                return false;
+            } else {
+                currentNode.isWordEnding = false;
+                currentNode.wordData = null;
+                return currentNode.children.isEmpty();
+            }
+        }
+
+        char ch = key.charAt(index);
+        Node nextNode = currentNode.children.get(ch);
+
+        if (nextNode == null) {
+            return false;
+        }
+
+        boolean shouldDeleteCurrentNode = delete(nextNode, key, index + 1) && !nextNode.isWordEnding;
+        if (shouldDeleteCurrentNode) {
+            currentNode.children.remove(ch);
+            return currentNode.children.isEmpty();
+        }
+        return false;
+    }
+    //Fixing method
+
+    /**
+     * Edit a node Word value.
+     *
+     * @param word input word
+     * @return whether the edit was successful
+     */
+    public boolean editWord(Word word) {
+        if (word.getWordTarget() == null) {
+            return false;
+        }
+        String key = word.getWordTarget().toLowerCase();
+        Node node = root;
+        for (char ch : key.toCharArray()) {
+            Node nextNode = node.children.get(ch);
+            if (nextNode == null) {
+                return false;
+            }
+            node = nextNode;
+        }
+        if (node != root) {
+            if (node.isWordEnding) {
+                node.wordData = word;
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
