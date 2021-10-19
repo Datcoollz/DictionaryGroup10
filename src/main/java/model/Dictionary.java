@@ -32,12 +32,12 @@ public class Dictionary {
 
     /**
      * Insert a new word into the list
-     *
-     * @param key the word to add
+     * @param word the word to add
      * @return true if the word is added,
      * false if the word is empty or already in the list
      */
-    public boolean insert(String key) {
+    public boolean insert(Word word) {
+        String key = word.getWordTarget();
         if (key == null) {
             return false;
         }
@@ -61,6 +61,7 @@ public class Dictionary {
                 return false;
             }
             node.isWordEnding = true;
+            node.wordData = word;
         }
         return true;
     }
@@ -76,14 +77,11 @@ public class Dictionary {
         }
         Node node = root;
         key = key.toLowerCase();
-
         for (char ch : key.toCharArray()) {
             Node nextNode = node.children.get(ch);
-            //If next character doesn't exist
             if (nextNode == null) {
                 return new Word();
             }
-            //Go to next node
             node = nextNode;
         }
         //Check if word is there
@@ -97,23 +95,19 @@ public class Dictionary {
     }
 
     /**
-     * Get all the child of a node
+     * Get all the child of a node and the node word itself
      * @param node input node
-     * @return ArrayList<String of child
+     * @return ArrayList of Word
      */
-    private ArrayList<String> getAllChild(Node node) {
-        ArrayList<String> list = new ArrayList<>();
+    private ArrayList<Word> getAllChild(Node node) {
+        ArrayList<Word> list = new ArrayList<>();
         if (node.isWordEnding) {
-            list.add("");
+            list.add(node.wordData);
         }
         for (Map.Entry<Character, Node> currentNode : node.children.entrySet()) {
             list.addAll(getAllChild(currentNode.getValue()));
         }
-        //Each string gets added with the node character to the front
-        //before returning
-        return (ArrayList<String>) list.stream()
-                .map(s -> node.ch + s)
-                .collect(Collectors.toList());
+        return list;
     }
 
     /**
@@ -121,7 +115,7 @@ public class Dictionary {
      * @param key input prefix
      * @return ArrayList of strings
      */
-    public ArrayList<String> searchPrefix(String key) {
+    public ArrayList<Word> searchPrefix(String key) {
         Node node = root;
         key = key.toLowerCase();
         for (char ch : key.toCharArray()) {
@@ -133,30 +127,14 @@ public class Dictionary {
             //Go to new word
             node = nextNode;
         }
-        ArrayList<String> list = new ArrayList<>();
-        if(node.isWordEnding) {
-            list.add("");
-        }
-        for (Map.Entry<Character, Node> currentNode : node.children.entrySet()) {
-            list.addAll(getAllChild(currentNode.getValue()));
-        }
-        String finalKey = key;
-        return (ArrayList<String>) list.stream()
-                .map(s -> finalKey + s)
-                .collect(Collectors.toList());
+        return getAllChild(node);
     }
 
     /**
      * Get all strings in the dictionary
      * Basically search for strings with an empty prefix
      */
-    public ArrayList<String> searchAll() {
+    public ArrayList<Word> searchAll() {
         return searchPrefix("");
-    }
-    //Old code
-    private final ArrayList<Word> wordList = new ArrayList<>();
-
-    public ArrayList<Word> getWordList() {
-        return wordList;
     }
 }
