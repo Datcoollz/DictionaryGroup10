@@ -66,10 +66,10 @@
                       </component>
                     </children>
                   </scrollpane>
-                  <component id="62745" class="javax.swing.JButton" binding="wordSearchButton">
+                  <component id="67d40" class="javax.swing.JLabel" binding="searchSign">
                     <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                        <preferred-size width="15" height="18"/>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="18" height="18"/>
                       </grid>
                     </constraints>
                     <properties>
