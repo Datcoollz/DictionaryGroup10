@@ -2,9 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Dictionary class, stores all words.
@@ -242,5 +240,4 @@ public class Dictionary {
         }
         return false;
     }
-
 }
