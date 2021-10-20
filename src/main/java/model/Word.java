@@ -25,6 +25,11 @@ public class Word {
     public Word() {
     }
 
+    public Word(String wordTarget) {
+        this.wordTarget = wordTarget;
+        this.wordExplain = null;
+    }
+
     public Word(String wordTarget, String wordExplain) {
         this.wordTarget = wordTarget;
         this.wordExplain = wordExplain;
