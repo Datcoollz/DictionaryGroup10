@@ -3,11 +3,10 @@ package control;
 import model.Dictionary;
 import model.Word;
 
-import javax.swing.*;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class DictionaryManagement {
