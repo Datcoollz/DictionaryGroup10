@@ -1,8 +1,10 @@
 package model;
 
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Dictionary class, stores all words.
@@ -15,7 +17,7 @@ public class Dictionary {
     private static class Node {
         char ch;
         boolean isWordEnding = false;
-        HashMap<Character, Node> children = new HashMap<>();
+        SortedMap<Character, Node> children = new TreeMap<>();
         Word wordData = null;
 
         //Constructor
@@ -34,13 +36,11 @@ public class Dictionary {
      * Insert a new word into the list
      *
      * @param word the word to add
-     * @return true if the word is added,
-     * false if the word is empty or already in the list
      */
-    public boolean insert(Word word) {
+    public void insert(Word word) {
         String key = word.getWordTarget();
         if (key == null) {
-            return false;
+            return;
         }
         //Change the key to all lowercase
         key = key.toLowerCase();
@@ -59,12 +59,11 @@ public class Dictionary {
         //Check if word already in the list
         if (node != root) {
             if (node.isWordEnding) {
-                return false;
+                return;
             }
             node.isWordEnding = true;
             node.wordData = word;
         }
-        return true;
     }
     //Searching methods
 
@@ -112,11 +111,13 @@ public class Dictionary {
      */
     private ArrayList<Word> getAllChild(Node node) {
         ArrayList<Word> list = new ArrayList<>();
-        if (node.isWordEnding) {
-            list.add(node.wordData);
-        }
-        for (Map.Entry<Character, Node> currentNode : node.children.entrySet()) {
-            list.addAll(getAllChild(currentNode.getValue()));
+        if (node != null) {
+            if (node.isWordEnding) {
+                list.add(node.wordData);
+            }
+            for (Map.Entry<Character, Node> currentNode : node.children.entrySet()) {
+                list.addAll(getAllChild(currentNode.getValue()));
+            }
         }
         return list;
     }
@@ -148,14 +149,16 @@ public class Dictionary {
     public ArrayList<Word> searchPrefix(String key) {
         Node node = root;
         key = key.toLowerCase();
-        for (char ch : key.toCharArray()) {
-            Node nextNode = node.children.get(ch);
-            //No word contains prefix
-            if (nextNode == null) {
-                return null;
+        if (!key.equals("")) {
+            for (char ch : key.toCharArray()) {
+                Node nextNode = node.children.get(ch);
+                //No word contains prefix
+                if (nextNode == null) {
+                    return null;
+                }
+                //Go to new word
+                node = nextNode;
             }
-            //Go to new word
-            node = nextNode;
         }
         return getAllChild(node);
     }
@@ -217,27 +220,24 @@ public class Dictionary {
      * Edit a node Word value.
      *
      * @param word input word
-     * @return whether the edit was successful
      */
-    public boolean editWord(Word word) {
+    public void editWord(Word word) {
         if (word.getWordTarget() == null) {
-            return false;
+            return;
         }
         String key = word.getWordTarget().toLowerCase();
         Node node = root;
         for (char ch : key.toCharArray()) {
             Node nextNode = node.children.get(ch);
             if (nextNode == null) {
-                return false;
+                return;
             }
             node = nextNode;
         }
         if (node != root) {
             if (node.isWordEnding) {
                 node.wordData = word;
-                return true;
             }
         }
-        return false;
     }
 }
