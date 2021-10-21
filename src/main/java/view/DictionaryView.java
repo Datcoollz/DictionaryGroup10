@@ -11,6 +11,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -52,16 +54,16 @@ public class DictionaryView {
         frame.setContentPane(mainPanel);
         frame.setBounds(200, 30, 700, 400);
         frame.pack();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            public void windowClosing(WindowEvent windowEvent) {
                 if (JOptionPane.showConfirmDialog(frame,
                         "Bạn có chắc chắn muốn thoát?", "Thoát?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    DictionaryCommandLine.dictionaryAdvanced(DictionaryCommandLine.EXPORT_TO_FILE, dictionary);
                     System.exit(0);
+                    DictionaryCommandLine.dictionaryAdvanced(DictionaryCommandLine.EXPORT_TO_FILE, dictionary);
                 }
             }
         });
@@ -324,7 +326,7 @@ public class DictionaryView {
     private void updateWordExplain() {
         int index = this.wordTargetList.getSelectedIndex();
         if (index >= 0) {
-            String newExplain = "<html>" + this.wordListModel.getElementAt(index).getWordExplain() + "</html";
+            String newExplain = "<html>" + this.wordListModel.getElementAt(index).getWordExplain() + "</html>";
             wordExplainArea.setText(newExplain);
         }
     }
