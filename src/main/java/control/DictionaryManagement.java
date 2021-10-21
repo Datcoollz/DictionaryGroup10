@@ -3,15 +3,14 @@ package control;
 import model.Dictionary;
 import model.Word;
 
-import javax.swing.*;
-import java.io.*;
-import java.util.Collections;
-import java.util.Objects;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DictionaryManagement {
     public static final String FILE_PATH = "dictionaries.txt";
-
 
     /**
      * Insert word from commandline
@@ -40,11 +39,9 @@ public class DictionaryManagement {
                 String data = input.nextLine();
                 String[] ss = data.split("\t");
                 if (ss.length > 1) {
-                    dictionary.getWordList().add(new Word(ss[0], ss[1]));
+                    dictionary.insert(new Word(ss[0], ss[1]));
                 }
             }
-            dictionary.getWordList().sort(
-                    ((o1, o2) -> o1.getWordTarget().compareToIgnoreCase(o2.getWordTarget())));
         } catch (FileNotFoundException e) {
             System.out.println(("No file found"));
         }
@@ -52,84 +49,51 @@ public class DictionaryManagement {
 
     /**
      * Search whether a word is in a dictionary.
+     * No use right now.
      *
-     * @return the index of the word in the dictionary,
-     * the closest one to the left if it doesn't exist,
-     * -1 otherwise
+     * @return the Word found
      */
-    public static int dictionaryLookup(Dictionary dictionary, Word word) {
-        if (!dictionary.getWordList().isEmpty()) {
-            int index = Collections.binarySearch(dictionary.getWordList(), word,
-                    (o1, o2) -> o1.getWordTarget().compareToIgnoreCase(o2.getWordTarget()));
-            if (index < 0) {
-                index = (index * -1) - 1;
-            }
-            if (index < dictionary.getWordList().size()) {
-                return index;
-            }
-        }
-        return -1;
+    public static Word dictionaryLookup(Dictionary dictionary, Word word) {
+        return dictionary.search(word);
     }
 
+    /**
+     * Call the searchPrefix method in trie.
+     * Search for words with input prefix.
+     *
+     * @param dictionary input dictionary
+     * @param word       prefix, takes wordTarget
+     * @return Array list of Word
+     */
+    public static ArrayList<Word> searchWord(Dictionary dictionary, Word word) {
+        return dictionary.searchPrefix(word);
+    }
 
     /**
-     * Add a new word to a dictionary.
+     * Add a word to the dictionary.
+     *
+     * @param dictionary the dictionary
+     * @param word       word to add
      */
     public static void addWord(Dictionary dictionary, Word word) {
-        int index = dictionaryLookup(dictionary, word);
-        //Check if dictionary is empty or is at the end of dictionary
-        if (dictionary.getWordList().isEmpty() || index >= dictionary.getWordList().size()) {
-            dictionary.getWordList().add(word);
-            JOptionPane.showMessageDialog(null, "Thêm thành công.");
-        } else {
-            //Check if word already exists in dictionary
-            if (word.getWordTarget().equals(dictionary.getWordList().get(index).getWordTarget())) {
-                JOptionPane.showMessageDialog(null, "Từ đã tồn tại.");
-            } else {
-                dictionary.getWordList().add(index, word);
-                JOptionPane.showMessageDialog(null, "Thêm thành công.");
-            }
-        }
+        dictionary.insert(word);
     }
 
     /**
      * Remove a word from a dictionary.
+     *
+     * @param dictionary the dictionary
+     * @param word       word to delete
      */
     public static void removeWord(Dictionary dictionary, Word word) {
-        int index = dictionaryLookup(dictionary, word);
-        //Check if dictionary is empty
-        if (dictionary.getWordList().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Từ điển trống.");
-        } else {
-            //check if word doesn't exist
-            if (index == -1
-                    || !word.getWordTarget().equals(dictionary.getWordList().get(index).getWordTarget())) {
-                JOptionPane.showMessageDialog(null, "Từ không tồn tại");
-            } else {
-                dictionary.getWordList().remove(index);
-                JOptionPane.showMessageDialog(null, "Xóa thành công.");
-            }
-        }
+        dictionary.delete(word);
     }
 
     /**
      * change a word's definition.
      */
     public static void fixWord(Dictionary dictionary, Word word) {
-        int index = dictionaryLookup(dictionary, word);
-        //Check if dictionary is empty
-        if (dictionary.getWordList().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Từ điển trống.");
-        } else {
-            //check if word doesn't exist
-            if (index == -1
-                    || !word.getWordTarget().equals(dictionary.getWordList().get(index).getWordTarget())) {
-                JOptionPane.showMessageDialog(null, "Từ không tồn tại");
-            } else {
-                dictionary.getWordList().get(index).setWordExplain(word.getWordExplain());
-                JOptionPane.showMessageDialog(null, "Sửa thành công");
-            }
-        }
+        dictionary.editWord(word);
     }
 
     /**
@@ -138,7 +102,7 @@ public class DictionaryManagement {
     public static void dictionaryExportToFile(Dictionary dictionary) {
         try {
             PrintWriter output = new PrintWriter(FILE_PATH);
-            for (Word i : dictionary.getWordList()) {
+            for (Word i : dictionary.searchAll()) {
                 System.out.println(i.getWordTarget() + "\t" + i.getWordExplain() + "\n");
                 output.write(i.getWordTarget() + "\t" + i.getWordExplain() + "\n");
             }

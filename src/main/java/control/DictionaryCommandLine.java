@@ -21,43 +21,17 @@ public class DictionaryCommandLine {
     /**
      * Show all words in the dictionary to commandline
      */
-    private static void showAllWords(Dictionary dictionary) {
-        ArrayList<Word> word_list = dictionary.getWordList();
-        if (word_list.isEmpty()) {
+    private static void showAllWords(ArrayList<Word> list) {
+        if (list.isEmpty()) {
             System.out.println("Khong co tu trong tu dien.");
             return;
         }
-
         int count = 1;
         System.out.println("No\t|English\t|Vietnamese");
-        for (Word i : word_list) {
+        for (Word i : list) {
             System.out.printf("%d\t|%s\t|%s\n", count, i.getWordTarget(), i.getWordExplain());
             ++count;
         }
-    }
-
-    private static Dictionary dictionarySearcher(Dictionary dictionary, String word_key) {
-        Dictionary return_word_list = new Dictionary();
-        if (!word_key.isEmpty()) {
-            System.out.println("Searching for words that start with " + word_key);
-            ArrayList<Word> word_list = dictionary.getWordList();
-            for (Word word : word_list) {
-                String word_target = word.getWordTarget();
-                for (int i = 0; i < word_target.length(); i++) {
-                    if (Character.toLowerCase(word_target.charAt(i)) != Character.toLowerCase(word_key.charAt(i))) {
-                        break;
-                    }
-                    if (word_key.length() == i + 1) {
-                        return_word_list.getWordList().add(word);
-                        break;
-                    }
-                }
-            }
-        }
-        else {
-            return_word_list = dictionary;
-        }
-        return return_word_list;
     }
 
     /**
@@ -67,7 +41,7 @@ public class DictionaryCommandLine {
     public static void dictionaryAdvanced(String COMMAND, Dictionary dictionary) {
         switch (COMMAND) {
             case SHOW_ALL_WORD: {
-                showAllWords(dictionary);
+                showAllWords(dictionary.searchAll());
                 break;
             }
             case INSERT_FROM_COMMANDLINE: {
@@ -92,7 +66,7 @@ public class DictionaryCommandLine {
      * Additional commands, these are commands that require a word.
      * Includes addWord(), removeWord(), fixWord(), dictionarySearcher and dictionaryLookup()
      */
-    public static Dictionary dictionaryAdvanced(String COMMAND, Dictionary dictionary, Word word) {
+    public static ArrayList<Word> dictionaryAdvanced(String COMMAND, Dictionary dictionary, Word word) {
         switch (COMMAND) {
             case ADD_WORD: {
                 DictionaryManagement.addWord(dictionary, word);
@@ -107,7 +81,7 @@ public class DictionaryCommandLine {
                 break;
             }
             case SEARCH_KEY_WORD: {
-                return dictionarySearcher(dictionary, word.getWordTarget());
+                return DictionaryManagement.searchWord(dictionary, word);
             }
             default: {
                 System.out.println("Lenh khong hop le");
