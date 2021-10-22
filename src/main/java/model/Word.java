@@ -4,9 +4,6 @@ package model;
  * Word class, contain the details of the word
  */
 public class Word {
-
-
-    //Old code
     private String wordTarget;
     private String wordExplain;
 
